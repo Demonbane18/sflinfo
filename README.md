@@ -1,5 +1,13 @@
 # SFLINFO
 
+A micro webapp that will check Sunflower Lands farms infos.
+
+Takes farm ID, or any eth address as input, and returns the data, *nyan*.
+
+Made totally in a rush, but at least, it works ;).
+
+New versions may use a real db for performance and global "counterparty" views, to detect... Multis :)
+
 ## Prerequisites
 
 Python >= 3.6
