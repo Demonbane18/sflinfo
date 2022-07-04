@@ -380,10 +380,10 @@ def get_farm_fromaddress(address):
             url = f"https://api.polygonscan.com/api?module=account&action=txlistinternal&address={address}&startblock=0&endblock=999999999&page=1&sort=asc&apikey={api_keys['polygonscan']}"
             result = requests.get(url=url).json()
             if result:
-                creation_tx = result['result'][0]['hash']
-                creation_tx_details = w3.eth.getTransaction(creation_tx)
-                minting_address = creation_tx_details['from']
                 try:
+                    creation_tx = result['result'][0]['hash']
+                    creation_tx_details = w3.eth.getTransaction(creation_tx)
+                    minting_address = creation_tx_details['from']
                     farm_id = farm_contract.functions.tokenOfOwnerByIndex(address, 0).call()
                 except:
                     farm_id = None
