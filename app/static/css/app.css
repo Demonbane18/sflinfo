@@ -1,0 +1,252 @@
+.logo {
+  font-family: 'Press Start 2P', cursive;
+}
+
+
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+/* Show it is fixed to the top */
+body {
+  min-height: 75rem;
+  padding-top: 4.5rem;
+  background-color: #212529 !important;
+}
+
+.navbar-brand {
+  font-family: 'Press Start 2P', cursive;
+  font-size:1rem;
+  padding-left:1rem;
+  top: 0.4rem;
+  position: relative;
+}
+
+.btn-check:focus + .btn-success, .btn-success:focus {
+  box-shadow: none;
+}
+.btn-check:focus + .btn, .btn:focus {
+
+  box-shadow: none;
+}
+.btn-check:checked + .btn-success:focus, .btn-check:active + .btn-success:focus, .btn-success:active:focus, .btn-success.active:focus, .show > .btn-success.dropdown-toggle:focus {
+  box-shadow: none;
+}
+
+.container-fluid>.row {
+  width: 100%;
+}
+
+button.navbar-toggler {
+position: absolute;
+right: 0.5rem;
+top: 0.4rem;
+}
+
+.navbar-dark .navbar-toggler, .navbar-dark, .cardtitle {
+  border-color: transparent;
+  background : #0dcaf0;
+}
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.cardtitle {
+  border-radius: 0.25rem;
+  font-family: 'Press Start 2P', cursive;
+  font-size:1rem;
+  padding:0.5rem;
+  padding-left:1.5rem;
+  color: #FFF;
+}
+
+.navbar-dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.container {
+  max-width: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#loadMe {
+    display:inline;
+}
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.sub {
+  background-color: #f8f9fa;
+  margin: 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: inherit;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+}
+
+.theader {
+  text-align: center;
+}
+
+.modal-content {
+  background-color: #0dcaf0;
+}
+
+.padre1 {
+  padding: 1rem;
+}
+
+.padre2 {
+  padding: 2rem;
+}
+
+.padresub {
+  padding: 0.5rem;
+}
+
+.mw1 {
+max-width: 1rem;
+}
+
+.mw2 {
+max-width: 2rem;
+}
+.mw3 {
+max-width: 3rem;
+}
+
+.mw100 {
+max-width: 100%;
+}
+
+.mp0 {
+  margin: 0px;
+padding: 0px;
+}
+
+.grass {
+  background: #63c74d;
+}
+.vam {
+  vertical-align: middle;
+}
+
+/*
+*[id$=_amount] {
+    font-size: 1.3rem;
+    text-align: center;
+}
+*/
+.ps2p {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.texre1p2{
+ font-family: var(--bs-font-sans-serif);
+font-size: 1rem;
+font-weight: 700;
+line-height: 1;
+padding-bottom: 1rem;
+}
+
+thead, tbody, tfoot, tr, td, th {
+  border-style: none;
+}
+
+.pseudowhite {
+  background-color: #f8f9fa;
+}
+
+.pb0mb0 {
+  padding-bottom: Opx;
+  margin-bottom: 0px;
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
+}
+.pt0mt0 {
+  padding-top: Opx;
+  margin-top: 0px;
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.brad {
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.trad {
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
+}
+
+
+
+#activity_internal_wrapper , #activity_mint_wrapper, #activity_burn_wrapper , #activity_external_wrapper{
+  position: relative;
+  padding-top: 1rem;
+padding-bottom: 1rem;
+}
+
+#activity_internal_filter , #activity_mint_filter, #activity_burn_filter , #activity_external_filter{
+  position: absolute;
+right: 0px;
+top: 1rem;
+}
+
+#activity_internal_paginate, #activity_mint_paginate, #activity_burn_paginate, #activity_external_paginate{
+  position: absolute;
+  right: 0px;
+  bottom: 1rem;
+}
+
+.paginate_button {
+  padding: 1px;
+  text-decoration: none;
+}
+
+.paginate_button:hover {
+  cursor: pointer;
+}
+
+.txout{
+  background-color: #ef9a9a;
+}
+
+.txin{
+  background-color: #a5d6a7;
+}
+
+.linkdt{
+  text-decoration: none;
+}

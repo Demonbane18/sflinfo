@@ -1,0 +1,16 @@
+**/logs/*
+**__pycache__**
+venv/*
+*.swp
+*.log
+**/to_import/*
+report.json
+*.sqlite3
+app/static/img/coins/*
+**.egg-info**
+**.eggs**
+**/dist/*
+**/build/*
+secretsettings.py
+**/erc1155/categorized_txs.json
+.idea

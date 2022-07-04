@@ -1,0 +1,401 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6 col-sm-12">
+            <div class="row sub">
+                <div class="col-12 cardtitle">
+                    Farmer Infos
+                </div>
+                <div class="col-sm-4 padre1">
+                    <img class="card-img-top" src="{{ url_for('static',filename='img/farm.png') }}" alt="Farm image">
+                </div>
+                <div class="col-sm-8 padre1">
+                    <table id="farmer_info_table" class="table table-striped" style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td>Farm ID</td>
+                                <td><a href="https://sunflower-land.com/play/#/farm/{{ farm_id }}" target="_blank">{{ farm_id }}</a></td>
+                            </tr>
+                            <tr>
+                                <td>Minting Date</td>
+                                <td><a href="https://polygonscan.com/tx/{{ minting_info['tx'] }}" target="_blank">{{ minting_info['date'] }} - Block {{ minting_info['block']|int }}</a></td>
+                            </tr>
+                            <tr>
+                                <td>Farm Address</td>
+                                <td><a href="https://polygonscan.com/address/{{ farm_address }}" target="_blank">{{ farm_address }}</a></td>
+                            </tr>
+                            <tr>
+                                <td>Opensea Address</td>
+                                <td><a href="https://polygonscan.com/address/{{ opensea_address }}" target="_blank">{{ opensea_address }}</a></td>
+                            </tr>
+                            {% if opensea_username is not none%}
+                            <tr>
+                                <td>Opensea Name</td>
+                                <td><a href="https://opensea.io/{{opensea_username}}" target="_blank">{{opensea_username}}</a></td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+            <div class="row sub brad trad">
+                <div class="col-12 cardtitle">
+                    NFT Activity
+                </div>
+                <div class="col-sm-12 mp0" >
+                    <div class="container" style="margin-top: 10px;">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#internal">Internal</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#mints">Mints</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#burns">Burns</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#external">External</a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane container active" id="internal">
+                                <table id="activity_internal" class="vam table table-striped text-center" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="theader">Block</th>
+                                            <th class="theader">Link</th>
+                                            <th class="theader">Type</th>
+                                            <th class="theader">NFT</th>
+                                            <th class="theader"></th>
+                                            <th class="theader">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tx_hash in categorized_txs['internal'] %}
+                                            {% for token_id in categorized_txs['internal'][tx_hash] %}
+                                                {% if categorized_txs['internal'][tx_hash][token_id]['type'] == "withdraw" %}
+                                                    <tr class="txout">
+                                                {% else %}
+                                                    <tr class="txin">
+                                                {% endif %}
+                                                    <td>{{ categorized_txs['internal'][tx_hash][token_id]['block_num'] }}</td>
+                                                    <td><a href="https://polygonscan.com/tx/{{tx_hash}}" target="_blank"><img class="mw2" src="{{ url_for('static',filename='img/polygonscan.png') }}"></a></td>
+                                                    <td>{{ categorized_txs['internal'][tx_hash][token_id]['type'] }}</td>
+                                                    <td>{{nfts[token_id]['name']}}</td>
+                                                    <td><img class="mw2" src="{{nfts[token_id]['image']}}"><p class="hidden">{{token_id}}</p></td>
+                                                    <td>{{ categorized_txs['internal'][tx_hash][token_id]['amount'] }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane container fade" id="mints">
+                                <table id="activity_mint" class="vam table table-striped text-center" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="theader">Block</th>
+                                            <th class="theader">Link</th>
+                                            <th class="theader">NFT</th>
+                                            <th class="theader"></th>
+                                            <th class="theader">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tx_hash in categorized_txs['mint'] %}
+                                            {% for token_id in categorized_txs['mint'][tx_hash] %}
+                                                <tr>
+                                                    <td>{{ categorized_txs['mint'][tx_hash][token_id]['block_num'] }}</td>
+                                                    <td><a href="https://polygonscan.com/tx/{{tx_hash}}" target="_blank"><img class="mw2" src="{{ url_for('static',filename='img/polygonscan.png') }}"></a></td>
+                                                    <td>{{nfts[token_id]['name']}}</td>
+                                                    <td><img class="mw2" src="{{nfts[token_id]['image']}}"><p class="hidden">{{token_id}}</p></td>
+                                                    <td>{{ categorized_txs['mint'][tx_hash][token_id]['amount'] }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane container fade" id="burns">
+                                <table id="activity_burn" class="vam table table-striped text-center" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="theader">Block</th>
+                                            <th class="theader">Link</th>
+                                            <th class="theader">NFT</th>
+                                            <th class="theader"></th>
+                                            <th class="theader">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tx_hash in categorized_txs['burn'] %}
+                                            {% for token_id in categorized_txs['burn'][tx_hash] %}
+                                                <tr>
+                                                    <td>{{ categorized_txs['burn'][tx_hash][token_id]['block_num'] }}</td>
+                                                    <td><a href="https://polygonscan.com/tx/{{tx_hash}}" target="_blank"><img class="mw2" src="{{ url_for('static',filename='img/polygonscan.png') }}"></a></td>
+                                                    <td>{{nfts[token_id]['name']}}</td>
+                                                    <td><img class="mw2" src="{{nfts[token_id]['image']}}"><p class="hidden">{{token_id}}</p></td>
+                                                    <td>{{ categorized_txs['burn'][tx_hash][token_id]['amount'] }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane container fade" id="external">
+                                <table id="activity_external" class="vam table table-striped text-center" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="theader">Block</th>
+                                            <th class="theader">Link</th>
+                                            <th class="theader">NFT</th>
+                                            <th class="theader"></th>
+                                            <th class="theader">Type</th>
+                                            <th class="theader">Amount</th>
+                                            <th class="theader">Counterparty</th>
+                                            <th class="theader">Total</th>
+                                            <th class="theader">outs</th>
+                                            <th class="theader">ins</th>
+                                            <th class="theader">FarmID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tx_hash in categorized_txs['external'] %}
+                                            {% for token_id in categorized_txs['external'][tx_hash] %}
+                                                {% if categorized_txs['external'][tx_hash][token_id]['type'] == "sender" %}
+                                                    <tr class="txout">
+                                                {% else %}
+                                                    <tr class="txin">
+                                                {% endif %}
+                                                    <td>{{ categorized_txs['external'][tx_hash][token_id]['block_num'] }}</td>
+                                                    <td><a href="https://polygonscan.com/tx/{{tx_hash}}" target="_blank"><img class="mw2" src="{{ url_for('static',filename='img/polygonscan.png') }}"></a></td>
+                                                    <td>{{nfts[token_id]['name']}}</td>
+                                                    <td><img class="mw2" src="{{nfts[token_id]['image']}}"><p class="hidden">{{token_id}}</p></td>
+                                                    <td>{{ categorized_txs['external'][tx_hash][token_id]['type'] }}</td>
+                                                    <td>{{ categorized_txs['external'][tx_hash][token_id]['amount'] }}</td>
+                                                    <td><a class="linkdt" href="https://polygonscan.com/address/{{ categorized_txs['external'][tx_hash][token_id]['counterparty'] }}" target="_blank">{{ categorized_txs['external'][tx_hash][token_id]['counterparty'][:5] }}...{{ categorized_txs['external'][tx_hash][token_id]['counterparty'][-5:] }}</a></td>
+                                                    <td>{% if categorized_txs['external'][tx_hash][token_id]['type'] == "sender" %}
+                                                            {{ counterparties[categorized_txs['external'][tx_hash][token_id]['counterparty']]['totalreceived'][token_id] }}
+                                                        {% else %}
+                                                            {{ counterparties[categorized_txs['external'][tx_hash][token_id]['counterparty']]['totalsent'][token_id] }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{ counterparties[categorized_txs['external'][tx_hash][token_id]['counterparty']]['txout'] }}</td>
+                                                    <td>{{ counterparties[categorized_txs['external'][tx_hash][token_id]['counterparty']]['txin'] }}</td>
+                                                    <td><a class="linkdt" href="https://sunflower-land.com/play/#/farm/{{ counterparties[categorized_txs['external'][tx_hash][token_id]['counterparty']]['farm_id'] }}" target="_blank">{{ counterparties[categorized_txs['external'][tx_hash][token_id]['counterparty']]['farm_id'] }}</a></td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+            <div class="row sub pb0mb0">
+                <div class="col-12 cardtitle">
+                     <a href="https://polygonscan.com/address/{{ farm_address }}" target="_blank">Farm Assets</a>
+                </div>
+                <div class="col-sm-6 padre1">
+                    <table id="farm_cryptoassets" class="text-center table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="theader">Network</th>
+                                <th class="theader">Asset</th>
+                                <th class="theader">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for coin in balances['farm'] %}
+                                {% for network in balances['farm'][coin] %}
+                                    <tr>
+                                        <td>{% if network == "ETHEREUM" %}
+                                                <img class="mw1" src="{{ url_for('static',filename='img/ethereum.png') }}">
+                                            {% else %}
+                                                <img class="mw1" src="{{ url_for('static',filename='img/matic.png') }}">
+                                            {% endif %}
+                                        </td>
+                                        <td><img class="mw2 padresub" src="static/img/{{coin | lower}}.png" alt="{{coin | lower}} logo">{% if coin=="ETHEREUM" %}ETH{% else %}{{coin}}{% endif %}</td>
+                                        <td>{{ balances['farm'][coin][network] }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6 padre1">
+                    <table id="farm_totals" class="text-center table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="theader">Total</th>
+                                <th class="theader">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/matic.png') }}" alt="matic logo">MATIC</td>
+                                <td id="matic_amount">{{ '%0.8f' % (total_balances['farm']["USD"]|float / prices['matic']['prices']['USD']|float) | float  }}</td>
+                            </tr>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/ethereum.png') }}" alt="eth logo">ETH</td>
+                                <td id="eth_amount">{{ '%0.8f' % (total_balances['farm']["USD"]|float / prices['ethereum']['prices']['USD']|float) | float  }}</td>
+                            </tr>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/sfl.png') }}" alt="sfl logo">SFL</td>
+                                <td id="sfl_amount">{{ '%0.8f' % (total_balances['farm']["USD"]|float / prices['sfl']['prices']['USD']|float) | float  }}</td>
+                            </tr>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/usdt.png') }}" alt="usdt logo">USDT</td>
+                                <td id="usdt_amount">{{ '%0.8f' % total_balances['farm']["USD"]|float }}</td>
+                            </tr>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/bitcoin.png') }}" alt="btc logo">BTC</td>
+                                <td id="btc_amount">{{ '%0.8f' % total_balances['farm']["BTC"]|float }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row sub pt0mt0">
+                {% for category in owned_nfts['farm'] %}
+                    {% if owned_nfts['farm'][category]|length >= 1 %}
+                        <div class="col-sm-4 padre1 pseudowhite">
+                            {% if category in ['NFTs', 'Quests', 'Food', 'Badges'] %}
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex justify-content-center texre1p2">{{category}}</div>
+                                    {% for id_nft in owned_nfts['farm'][category] %}
+                                        {% if (owned_nfts['farm'][category][id_nft]|float > 0) %}
+                                            <div class="col-sm-4 mp0"><img class="mw100" src="{{nfts[id_nft]['image']}}" alt="{{nfts[id_nft]['name']}}"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <table id="farm_{{category}}" class="vam table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="theader" colspan="3">
+                                                {{ category }}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for id_nft in owned_nfts['farm'][category] %}
+                                            {% if (owned_nfts['farm'][category][id_nft]|float > 0) %}
+                                                <tr>
+                                                    <td><img class="mw2" src="{{nfts[id_nft]['image']}}"></td><td>{{nfts[id_nft]['name']}}</td><td>{{ owned_nfts['farm'][category][id_nft] }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+            <div class="row sub">
+                <div class="col-12 cardtitle">
+                     <a href="https://polygonscan.com/address/{{ opensea_address }}" target="_blank">Opensea Assets</a>
+                </div>
+                <div class="col-sm-6 padre1">
+                    <table id="opensea_cryptoassets" class="text-center table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="theader">Network</th>
+                                <th class="theader">Asset</th>
+                                <th class="theader">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for coin in balances['opensea'] %}
+                                {% for network in balances['opensea'][coin] %}
+                                    <tr>
+                                        <td>{% if network == "ETHEREUM" %}
+                                                <img class="mw1" src="{{ url_for('static',filename='img/ethereum.png') }}">
+                                            {% else %}
+                                                <img class="mw1" src="{{ url_for('static',filename='img/matic.png') }}">
+                                            {% endif %}
+                                        </td>
+                                        <td><img class="mw2 padresub" src="static/img/{{coin | lower}}.png" alt="{{coin | lower}} logo">{% if coin=="ETHEREUM" %}ETH{% else %}{{coin}}{% endif %}</td>
+                                        <td>{{ balances['opensea'][coin][network] }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6 padre1">
+                    <table id="opensea_totals" class="text-center table table-striped" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="theader">Total</th>
+                                <th class="theader">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/matic.png') }}" alt="matic logo">MATIC</td>
+                                <td id="matic_amount">{{ '%0.8f' % (total_balances['opensea']["USD"]|float / prices['matic']['prices']['USD']|float) }}</td>
+                            </tr>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/ethereum.png') }}" alt="eth logo">ETH</td>
+                                <td id="eth_amount">{{ '%0.8f' % (total_balances['opensea']["USD"]|float / prices['ethereum']['prices']['USD']|float) | float  }}</td>
+                            </tr>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/sfl.png') }}" alt="sfl logo">SFL</td>
+                                <td id="sfl_amount">{{ '%0.8f' %  (total_balances['opensea']["USD"]|float / prices['sfl']['prices']['USD']|float) | float  }}</td>
+                            </tr>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/usdt.png') }}" alt="usdt logo">USDT</td>
+                                <td id="usdt_amount">{{ '%0.2f' %  total_balances['opensea']["USD"]|float }}</td>
+                            </tr>
+                            <tr>
+                                <td><img class="mw2 padresub" src="{{ url_for('static',filename='img/bitcoin.png') }}" alt="btc logo">BTC</td>
+                                <td id="btc_amount">{{ '%0.8f' %  total_balances['opensea']["BTC"]|float }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% for category in owned_nfts['opensea'] %}
+                    {% if (owned_nfts['opensea'][category]|length >= 1) %}
+                        <div class="col-sm-4 padre1">
+                            <table id="farm_{{category}}" class="vam table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="theader" colspan="3">
+                                            {{ category }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for id_nft in owned_nfts['opensea'][category] %}
+                                        {% if (owned_nfts['opensea'][category][id_nft]|float > 0) %}
+                                            <tr>
+                                                {% if category in ['NFTs', 'Quests', 'Food', 'Badges'] %}
+                                                    <td><div class="col-sm-4 mp0"><img class="mw100" src="{{nfts[id_nft]['image']}}" alt="{{nfts[id_nft]['name']}}"></div></td>
+                                                {% else %}
+                                                    <td><img class="mw2" src="{{nfts[id_nft]['image']}}"></td><td>{{nfts[id_nft]['name']}}</td><td>{{ owned_nfts['opensea'][category][id_nft] }}</td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

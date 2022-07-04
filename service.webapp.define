@@ -1,0 +1,25 @@
+#!/bin/bash
+if [ "$EUID" -ne 0 ] && [[ -z "${SUDO_USER// }" ]]
+  then echo "Please run as user with sudo (root not allowed)" 1>&2
+  exit
+else
+  servicename="webapp.service"
+  rm /etc/systemd/system/${servicename} 2>/dev/null
+  echo "[Unit]" >> /etc/systemd/system/${servicename}
+  echo "Description=foliobot daemon" >> /etc/systemd/system/${servicename}
+  echo "After=network.target" >> /etc/systemd/system/${servicename}
+  echo "[Service]" >> /etc/systemd/system/${servicename}
+  echo "Type=simple" >> /etc/systemd/system/${servicename}
+  echo "User=${SUDO_USER}" >> /etc/systemd/system/${servicename}
+  echo "Group=${SUDO_USER}" >> /etc/systemd/system/${servicename}
+  echo "WorkingDirectory=/home/${SUDO_USER}/${PWD##*/}" >> /etc/systemd/system/${servicename}
+  echo "ExecStart=/home/${SUDO_USER}/${PWD##*/}/venv/bin/gunicorn --bind 0.0.0.0:5000 wsgi:app" >> /etc/systemd/system/${servicename}
+  echo 'ExecReload=/bin/kill -s HUP $MAINPID' >> /etc/systemd/system/${servicename}
+  echo "KillMode=mixed" >> /etc/systemd/system/${servicename}
+  echo "TimeoutStopSec=5" >> /etc/systemd/system/${servicename}
+  echo "PrivateTmp=true" >> /etc/systemd/system/${servicename}
+  echo "[Install]" >> /etc/systemd/system/${servicename}
+  echo "WantedBy=multi-user.target" >> /etc/systemd/system/${servicename}
+  systemctl daemon-reload
+fi
+
