@@ -375,6 +375,7 @@ def get_farm_fromaddress(address):
                 farm_id = farm_contract.functions.tokenOfOwnerByIndex(address, 0).call()
             except:
                 farm_id = None
+
         # Damned, that s a contract, let s find who minted it
         if farm_id is None:
             url = f"https://api.polygonscan.com/api?module=account&action=txlistinternal&address={address}&startblock=0&endblock=999999999&page=1&sort=asc&apikey={api_keys['polygonscan']}"
