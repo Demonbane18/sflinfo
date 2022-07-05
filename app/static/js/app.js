@@ -14,6 +14,19 @@ $(document).ready(function () {
                                     {type: "natural-nohtml", targets: 0}
                                 ]
                             });
+
+	$('#farmerinfo_totals').DataTable({
+            "order": [[0, "desc"]],
+            "paging": true,
+            "info": true,
+            "searching": true,
+            "pageLength" : 10,
+            "stripeClasses": ['odd-row', 'even-row'],
+            "columnDefs": [
+                {type: "natural-nohtml", targets: 0}
+            ]
+        });
+
     $('#opensea_cryptoassets').DataTable({
                             "order": [[0, "desc"]],
                             "paging": false,
@@ -69,17 +82,6 @@ $(document).ready(function () {
                     {type: "natural-nohtml", targets: 0}
                 ]
             });
-    $('#farmerinfo_totals').DataTable({
-            "order": [[0, "desc"]],
-            "paging": true,
-            "info": true,
-            "searching": true,
-            "pageLength" : 10,
-            "stripeClasses": ['odd-row', 'even-row'],
-            "columnDefs": [
-                {type: "natural-nohtml", targets: 0}
-            ]
-        });
 
 
     $( "#query_form" ).submit(function( event ) {
