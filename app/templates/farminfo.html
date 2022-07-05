@@ -37,6 +37,27 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="col-sm-12 padre1">
+                    <table id="farmerinfo_totals" class="vam table table-striped text-center" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="theader">Action</th>
+                                <th class="theader">NFT</th>
+                                <th class="theader"></th>
+                                <th class="theader">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for action in categorized_txs %}
+                                {% if action in ['totalwithdraw', 'totaldeposit', 'totalburned', 'totalminted', 'totalreceived', 'totalsent'] %}
+                                   {% for token_id in categorized_txs[action] %}
+                                       <tr><td>{{action}}</td><td>{{nfts[token_id]['name']}}</td><td><img class="mw2" src="{{nfts[token_id]['image']}}"></td><td>{{categorized_txs[action][token_id]}}</td></tr>
+                                   {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="col-lg-6 col-sm-12">

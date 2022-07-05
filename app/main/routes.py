@@ -221,6 +221,18 @@ def transfer_sorting(categorized_txs, counterparties, transfer_list, farm_addres
                     decimals = nfts[str(token_id)]['decimals']
                     amount = raw_amount / (10 ** decimals)
                     categorized_txs['internal'][str(cur_hash)][str(token_id)] = {"type": tx_type, "amount": amount, "block_num": block_num}
+                    if tx_type == "withdraw":
+                        if 'totalwithdraw' not in categorized_txs:
+                            categorized_txs['totalwithdraw'] = {}
+                        if str(token_id) not in categorized_txs['totalwithdraw']:
+                            categorized_txs['totalwithdraw'][str(token_id)] = 0
+                        categorized_txs['totalwithdraw'][str(token_id)] += amount
+                    else:
+                        if 'totaldeposit' not in categorized_txs:
+                            categorized_txs['totaldeposit'] = {}
+                        if str(token_id) not in categorized_txs['totaldeposit']:
+                            categorized_txs['totaldeposit'][str(token_id)] = 0
+                        categorized_txs['totaldeposit'][str(token_id)] += amount
 
             elif from_address == farm_address and to_address == "0x0000000000000000000000000000000000000000" or from_address == opensea_address and to_address == "0x0000000000000000000000000000000000000000":
                 if cur_hash not in categorized_txs['burn']:
@@ -291,6 +303,11 @@ def transfer_sorting(categorized_txs, counterparties, transfer_list, farm_addres
                             "type": tx_type,
                             "amount": amount,
                             "counterparty": counterparty, "block_num": block_num}
+                        if 'totalsent' not in categorized_txs:
+                            categorized_txs['totalsent'] = {}
+                        if str(token_id) not in categorized_txs['totalsent']:
+                            categorized_txs['totalsent'][str(token_id)] = 0
+                        categorized_txs['totalsent'][str(token_id)] += amount
                         if str(token_id) not in counterparties[counterparty]['received']:
                             counterparties[counterparty]['received'][str(token_id)] = []
                         counterparties[counterparty]['received'][str(token_id)].append({"tx": cur_hash, "amount": amount})
@@ -320,6 +337,11 @@ def transfer_sorting(categorized_txs, counterparties, transfer_list, farm_addres
                             "type": tx_type,
                             "amount": amount,
                             "counterparty": counterparty, "block_num": block_num}
+                        if 'totalreceived' not in categorized_txs:
+                            categorized_txs['totalreceived'] = {}
+                        if str(token_id) not in categorized_txs['totalreceived']:
+                            categorized_txs['totalreceived'][str(token_id)] = 0
+                        categorized_txs['totalreceived'][str(token_id)] += amount
                         if str(token_id) not in counterparties[counterparty]['sent']:
                             counterparties[counterparty]['sent'][str(token_id)] = []
                         counterparties[counterparty]['sent'][str(token_id)].append({"tx": cur_hash, "amount": amount})

@@ -212,19 +212,19 @@ thead, tbody, tfoot, tr, td, th {
 
 
 
-#activity_internal_wrapper , #activity_mint_wrapper, #activity_burn_wrapper , #activity_external_wrapper{
+#activity_internal_wrapper , #activity_mint_wrapper, #activity_burn_wrapper , #activity_external_wrapper, #farmerinfo_totals_wrapper{
   position: relative;
   padding-top: 1rem;
 padding-bottom: 1rem;
 }
 
-#activity_internal_filter , #activity_mint_filter, #activity_burn_filter , #activity_external_filter{
+#activity_internal_filter , #activity_mint_filter, #activity_burn_filter , #activity_external_filter, #farmerinfo_totals_filter{
   position: absolute;
 right: 0px;
 top: 1rem;
 }
 
-#activity_internal_paginate, #activity_mint_paginate, #activity_burn_paginate, #activity_external_paginate{
+#activity_internal_paginate, #activity_mint_paginate, #activity_burn_paginate, #activity_external_paginate, #farmerinfo_totals_paginate{
   position: absolute;
   right: 0px;
   bottom: 1rem;
